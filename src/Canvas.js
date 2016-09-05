@@ -3,10 +3,9 @@ import * as d3 from "d3";
 import _ from 'lodash';
 
 // properties
-var maxRadius = 45;
+var width = 1000;
+var maxRadius = 50;
 var padding = 75;
-var width = 900;
-var height = 900;
 var TWO_PI = 2 * Math.PI;
 var colors = {
   'China': [[255,0,0], [255,255,0]],
@@ -103,11 +102,17 @@ module.exports = React.createClass({
 
   componentDidMount() {
     this.refs.canvas.width = width;
-    this.refs.canvas.height = height;
     this.ctx = this.refs.canvas.getContext('2d');
     this.ctx.globalCompositeOperation = 'overlay';
 
     var flows = this.generateFlowData(this.props.data);
+
+    var height = _.maxBy(flows, 'totalLength').totalLength * 0.5 + 2 * padding;
+    this.refs.canvas.height = height;
+    _.each(flows, (flow) => {
+      flow.centerY = height - padding;
+    });
+
     this.calculateCircles(flows);
     this.drawFlows(flows);
     this.setState({flows});
@@ -122,8 +127,8 @@ module.exports = React.createClass({
       gradient.addColorStop(0, 'rgba(' + colors[team.country][1] + ',0.1)');
 
       return {
+        width: xWidth,
         centerX: xWidth * i + padding,
-        centerY: padding,
         stroke: gradient,
         fill: 'rgba(' + colors[team.gender] + ', 0.01)',
         radii: _.map(team.breakdown, (scores) => {
@@ -200,13 +205,14 @@ module.exports = React.createClass({
         var length = flow.length[i + 1];
         this.ctx.strokeStyle = flow.stroke;
 
+        var xOffset = 0;
         // for each of the interpolators, draw the circle length amount of times
         _.times(length, (i) => {
           this.ctx.beginPath();
           drawCount += 1;
 
-          flow.centerY += 0.5;
-          var xOffset = (_.last(flow.radii) / 3) *
+          flow.centerY -= 0.5;
+          xOffset = (_.last(flow.radii) / 3) *
             Math.sin(drawCount/flow.data.total * TWO_PI);
           this.ctx.setTransform(1, 0, 0, 1, flow.centerX + xOffset, flow.centerY);
 

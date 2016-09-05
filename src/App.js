@@ -12,8 +12,8 @@ module.exports = React.createClass({
   },
 
   processData(data) {
-    var maxRadius = 45;
-    this.radiusScale = d3.scaleLinear().range([maxRadius / 3 * 2, maxRadius]);
+    var maxRadius = 50;
+    this.radiusScale = d3.scaleLog().range([maxRadius / 4, maxRadius]);
     this.yScale = d3.scaleLinear().range([0, 1]);
 
     _.each(data, (d) => {
