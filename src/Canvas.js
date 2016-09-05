@@ -114,7 +114,9 @@ module.exports = React.createClass({
     });
 
     this.calculateCircles(flows);
-    this.drawFlows(flows);
+    var scorePositions = this.drawFlowsAndReturnPositions(flows);
+
+    this.props.updateScorePositions(scorePositions);
     this.setState({flows});
   },
 
@@ -143,7 +145,6 @@ module.exports = React.createClass({
         rotations: _.map(team.breakdown, (scores) => {
           return scores[1] / team.total;
         }),
-        dataPoints: [],
         totalLength: Math.floor(team.total) * 4,
         elapsed: 0,
         data: team
@@ -197,11 +198,12 @@ module.exports = React.createClass({
     });
   },
 
-  drawFlows(flows) {
-    _.each(flows, (flow) => {
+  // draw the flows and also return the positions that each score is at
+  drawFlowsAndReturnPositions(flows) {
+    return _.map(flows, (flow) => {
       var drawCount = 0;
 
-      _.each(flow.interpolators, (interpolator, i) => {
+      return _.map(flow.interpolators, (interpolator, i) => {
         var length = flow.length[i + 1];
         this.ctx.strokeStyle = flow.stroke;
 
@@ -225,16 +227,16 @@ module.exports = React.createClass({
           this.ctx.stroke();
         });
 
-        // if (t === length) {
-        //   var x1 = flow.centerX + xOffset;
-        //   var maxX = _.maxBy(flow.circles[i + 1], 'x').x;
-        //   flow.dataPoints.push({
-        //     x1: x1,
-        //     x2: x1 + maxX,
-        //     y: flow.centerY,
-        //     score: flow.data.breakdown[i + 1]
-        //   });
-        // }
+        // calculate the positions of each score
+        var x1 = flow.centerX + xOffset;
+        var maxX = _.maxBy(flow.circles[i + 1], 'x').x;
+        var maxY = _.maxBy(flow.circles[i + 1], 'y').y;
+        return {
+          x1: x1,
+          x2: x1 + maxX,
+          y: flow.centerY,
+          score: flow.data.breakdown[i + 1]
+        };
       });
     });
   },

@@ -2,7 +2,7 @@ import React from 'react';
 import * as d3 from "d3";
 import _ from 'lodash';
 import data from './data/diving.json';
-import Canvas from './Canvas.js';
+import Section from './Section.js';
 
 module.exports = React.createClass({
   getInitialState() {
@@ -43,8 +43,8 @@ module.exports = React.createClass({
 
     return (
       <div>
-        <Canvas data={women} scales={scales} />
-        <Canvas data={men} scales={scales} />
+        <Section data={women} scales={scales} />
+        <Section data={men} scales={scales} />
       </div>
     );
   }
