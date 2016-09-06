@@ -99,16 +99,16 @@ module.exports = React.createClass({
   },
 
   componentDidMount() {
-    this.refs.canvas.width = width;
+    this.refs.canvas.width = this.props.width;
     this.ctx = this.refs.canvas.getContext('2d');
     this.ctx.globalCompositeOperation = 'overlay';
 
     var flows = this.generateFlowData(this.props.data);
 
-    var height = _.maxBy(flows, 'totalLength').totalLength * 0.5 + 2 * padding;
+    var height = _.maxBy(flows, 'totalLength').totalLength * 0.5 + 2 * this.props.padding;
     this.refs.canvas.height = height;
     _.each(flows, (flow) => {
-      flow.centerY = height - padding;
+      flow.centerY = height - this.props.padding;
     });
 
     this.calculateCircles(flows);
@@ -120,7 +120,7 @@ module.exports = React.createClass({
 
   // generate the flow line, given one event for one team
   generateFlowData(teams) {
-    var xWidth = (width - 2 * padding) / (teams.length - 1);
+    var xWidth = (this.props.width - 2 * this.props.padding) / (this.props.data.length - 1);
     return _.map(teams, (team, i) => {
       var gradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, maxRadius);
       gradient.addColorStop(1, 'rgba(' + colors[team.country][0] + ',0.1)');
@@ -128,7 +128,7 @@ module.exports = React.createClass({
 
       return {
         width: xWidth,
-        centerX: xWidth * i + padding,
+        centerX: xWidth * i + this.props.padding,
         stroke: gradient,
         fill: 'rgba(' + colors[team.gender] + ', 0.01)',
         radii: _.map(team.breakdown, (scores) => {
