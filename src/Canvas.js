@@ -211,12 +211,15 @@ module.exports = React.createClass({
           this.ctx.beginPath();
           drawCount += 1;
 
+          var points = interpolator(i / length);
+          var minX = _.minBy(points, 'x').x;
+          var maxX = _.maxBy(points, 'x').x;
+
           flow.centerY -= 0.5;
           xOffset = (_.last(flow.radii) / 3) *
-            Math.sin(drawCount/flow.data.total * TWO_PI);
+            Math.sin(drawCount/flow.data.total * TWO_PI) - (maxX - minX) / 2;
           this.ctx.setTransform(1, 0, 0, 1, flow.centerX + xOffset, flow.centerY);
 
-          var points = interpolator(i / length);
           _.each(points, (pos) => {
             this.ctx.lineTo(pos.x, pos.y);
           });
@@ -228,7 +231,6 @@ module.exports = React.createClass({
         // calculate the positions of each score
         var x1 = flow.centerX + xOffset;
         var maxX = _.maxBy(flow.circles[i + 1], 'x').x;
-        var maxY = _.maxBy(flow.circles[i + 1], 'y').y;
         return {
           x1: x1,
           x2: x1 + maxX,
