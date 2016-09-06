@@ -235,7 +235,8 @@ module.exports = React.createClass({
           x1: x1,
           x2: x1 + maxX,
           y: flow.centerY,
-          score: flow.data.breakdown[i + 1]
+          score: flow.data.breakdown[i + 1],
+          data: flow.data,
         };
       });
     });
