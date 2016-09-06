@@ -6,7 +6,7 @@ import Annotation from './Annotation.js';
 module.exports = React.createClass({
   getInitialState() {
     return {
-      width: 1200,
+      width: 700,
       padding: 175,
       scorePositions: [],
       selected: null,

@@ -148,12 +148,12 @@ module.exports = React.createClass({
           return generateCircleData(scores, this.props.scales.yScale);
         }),
         length: _.map(team.breakdown, (scores) => {
-          return Math.floor(scores[1]) * 3.5;
+          return Math.floor(scores[1]) * 3.25;
         }),
         rotations: _.map(team.breakdown, (scores) => {
           return scores[1] / team.total;
         }),
-        totalLength: Math.floor(team.total) * 3.5,
+        totalLength: Math.floor(team.total) * 3.25,
         elapsed: 0,
         data: team
       }
