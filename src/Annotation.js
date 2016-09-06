@@ -92,17 +92,21 @@ module.exports = React.createClass({
             display: 'inline-block',
           };
           // dot for medals
-          var dotSize = 10;
+          var dotSize = 16;
           var dotStyle = {
             width: dotSize,
             height: dotSize,
             borderRadius: dotSize,
             backgroundColor: 'rgb(' + colors[country.medal] + ')',
             margin: '5px auto',
+            fontSize: 10,
+            color: '#fff',
+            lineHeight: dotSize + 'px',
+            fontWeight: 600,
           };
           return (
             <div style={countryStyle}>
-              <div style={dotStyle}></div>
+              <div style={dotStyle}>{country.medal[0].toUpperCase()}</div>
               <div style={{fontSize: 14}}>{country.country}</div>
               <div style={{fontSize: 10}}>{format2(country.total)}</div>
               <div style={{fontSize: 10}}>{country.athletes.join(' & ')}</div>
