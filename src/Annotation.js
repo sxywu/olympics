@@ -51,7 +51,7 @@ module.exports = React.createClass({
         opacity,
       };
       return (
-        <div style={posStyle}>
+        <div key={i} style={posStyle}
           onClick={this.onClick.bind(this, pos)}>
           {format1(pos.score[0])} <br />
           {format2(pos.score[1])}
@@ -105,7 +105,7 @@ module.exports = React.createClass({
             fontWeight: 600,
           };
           return (
-            <div style={countryStyle}>
+            <div key={key + ':' +i} style={countryStyle}>
               <div style={dotStyle}>{country.medal[0].toUpperCase()}</div>
               <div style={{fontSize: 14}}>{country.country}</div>
               <div style={{fontSize: 10}}>{format2(country.total)}</div>
@@ -115,7 +115,7 @@ module.exports = React.createClass({
         });
 
         return (
-          <div style={eventStyle}>
+          <div key={key} style={eventStyle}>
             <div style={{fontSize: 16}}>{key}</div>
             {countries}
           </div>
