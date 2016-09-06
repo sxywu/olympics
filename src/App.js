@@ -17,7 +17,7 @@ module.exports = React.createClass({
     this.yScale = d3.scaleLinear().range([0, 1]);
 
     data = _.chain(data)
-      .sortBy((d) => d.event)
+      .sortBy((d) => new Date(d.date))
       .map((d) => {
         // create an artifical first score
         d.breakdown.unshift(d.breakdown[0]);

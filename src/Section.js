@@ -18,7 +18,8 @@ module.exports = React.createClass({
   },
 
   updatePositions(scorePositions, height) {
-    scorePositions = _.flattenDeep(scorePositions);
+    scorePositions = _.chain(scorePositions)
+      .flattenDeep().reverse().value();
     this.setState({scorePositions, height});
   },
 

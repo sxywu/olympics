@@ -118,8 +118,7 @@ module.exports = React.createClass({
     // 2. there's something selected but it's the same as the last
     if ((!this.props.selected && !nextProps.selected) ||
       (this.props.selected && nextProps.selected &&
-      this.props.selected.index === nextProps.selected.index &&
-      this.props.selected.event === nextProps.selected.event)) {
+      this.props.selected.index === nextProps.selected.index)) {
       return;
     }
     // first reset transform and clear the canvas
@@ -175,8 +174,7 @@ module.exports = React.createClass({
         // if there's nothing selected, everything should be colored
         if (!selected) return colorGradient;
         // if something IS selected, only color the ones matching the event and round
-        return selected.event === flow.data.event && selected.index === i ?
-          colorGradient : grayGradient;
+        return selected.index === i ? colorGradient : grayGradient;
       });
     });
   },

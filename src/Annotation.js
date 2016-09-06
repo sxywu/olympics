@@ -9,11 +9,24 @@ var colors = {
 };
 
 module.exports = React.createClass({
+  getInitialState() {
+    return {
+      hovered: null,
+    };
+  },
+
+  onMouseOver(pos) {
+    this.setState({hovered: pos})
+  },
+
+  onMouseLeave() {
+    this.setState({hovered: null})
+  },
+
   onClick(pos) {
     // if the event and round is the same, unselect
     if (this.props.selected &&
-      this.props.selected.index === pos.index &&
-      this.props.selected.event === pos.data.event) {
+      this.props.selected.index === pos.index) {
       this.props.onSelect();
     } else {
       this.props.onSelect({index: pos.index, event: pos.data.event});
@@ -26,35 +39,66 @@ module.exports = React.createClass({
       top: 0,
       left: 0,
       width: this.props.width,
+      height: this.props.height,
     };
 
     var format1 = d3.format('.1f');
     var format2 = d3.format('.2f');
     var annotations = _.map(this.props.scorePositions, (pos, i) => {
-      var fontSize = 10;
-      var opacity = 1;
-      if (this.props.selected &&
-        (this.props.selected.index !== pos.index ||
-        this.props.selected.event !== pos.data.event)) {
-        // if something is hovered, but it's not this event or round
-        opacity = .1;
-      }
       var posStyle = {
         position: 'absolute',
-        fontSize,
-        top: pos.y - 2 * fontSize,
+        fontSize: 10,
+        bottom: this.props.height - pos.y,
         left: pos.x1,
         paddingLeft: pos.x2 - pos.x1 + 10,
         borderBottom: '1px solid',
-        textAlign: 'right',
+        textAlign: 'center',
         cursor: 'pointer',
-        opacity,
+        opacity: 1,
       };
+      var tdStyle = {
+        padding: '0 5px',
+      };
+
+      var round = null;
+      var name = null;
+      var scores = null;
+      if (this.state.hovered === pos) {
+        // if this is the hovered annotation
+        tdStyle.borderRight = '1px solid';
+        tdStyle.textShadow = '-1px -1px 0 #fff, 1px -1px 0 #fff,' +
+          ' -1px 1px 0 #fff, 1px 1px 0 #fff;';
+        // posStyle.backgroundColor = 'rgba(255, 255, 255, .25)';
+
+        round = (<div>Round {pos.index + 1}</div>);
+        name = (<td colSpan={pos.score[2].length}>{pos.score[4]}</td>);
+        scores = _.map(pos.score[2], (score, i) => {
+          return (<td key={i}>{format1(score)}</td>);
+        });
+      } else if (this.state.hovered ||
+        (this.props.selected && (this.props.selected.index !== pos.index))) {
+        // if this isn't the thing that's hovered, or
+        // if this isn't the thing that's selected
+        posStyle.opacity = 0.1;
+      }
+
       return (
         <div key={i} style={posStyle}
+          onMouseOver={this.onMouseOver.bind(this, pos)} onMouseLeave={this.onMouseLeave}
           onClick={this.onClick.bind(this, pos)}>
-          {format1(pos.score[0])} <br />
-          {format2(pos.score[1])}
+          {round}
+          <table>
+            <tbody>
+              <tr>
+                <td style={tdStyle}>{format1(pos.score[0])}</td>
+                {name}
+              </tr>
+              <tr>
+                <td style={tdStyle}>{format1(pos.score[1])}</td>
+                {scores}
+              </tr>
+            </tbody>
+          </table>
         </div>
       );
     });
