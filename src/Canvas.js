@@ -116,7 +116,7 @@ module.exports = React.createClass({
     this.calculateCircles(flows);
     var scorePositions = this.drawFlowsAndReturnPositions(flows);
 
-    this.props.updateScorePositions(scorePositions);
+    this.props.updatePositions(scorePositions, height);
     this.setState({flows});
   },
 
