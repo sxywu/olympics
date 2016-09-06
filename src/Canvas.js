@@ -92,45 +92,56 @@ function tweenPoints(circle1, circle2) {
 }
 
 module.exports = React.createClass({
-  getInitialState() {
-    return {
-      flows: [],
-    }
-  },
-
   componentDidMount() {
     this.refs.canvas.width = this.props.width;
     this.ctx = this.refs.canvas.getContext('2d');
     this.ctx.globalCompositeOperation = 'overlay';
 
-    var flows = this.generateFlowData(this.props.data);
+    this.flows = this.generateFlowData(this.props.data);
 
-    var height = _.maxBy(flows, 'totalLength').totalLength * 0.5 + 2 * this.props.padding;
-    this.refs.canvas.height = height;
-    _.each(flows, (flow) => {
-      flow.centerY = height - this.props.padding;
+    this.height = _.maxBy(this.flows, 'totalLength').totalLength * 0.5 + 2 * this.props.padding;
+    this.refs.canvas.height = this.height;
+    _.each(this.flows, (flow) => {
+      flow.centerY = this.height - this.props.padding;
     });
 
-    this.calculateCircles(flows);
-    var scorePositions = this.drawFlowsAndReturnPositions(flows);
+    this.calculateCircles(this.flows);
+    this.updateCircleColors(this.flows, this.props.selected)
+    var scorePositions = this.drawFlowsAndReturnPositions(this.flows);
 
-    this.props.updatePositions(scorePositions, height);
-    this.setState({flows});
+    this.props.updatePositions(scorePositions, this.height);
+  },
+
+  componentWillReceiveProps(nextProps) {
+    // don't rerender if nothing's changed:
+    // 1. there was nothing selected and there still isn't
+    // 2. there's something selected but it's the same as the last
+    if ((!this.props.selected && !nextProps.selected) ||
+      (this.props.selected && nextProps.selected &&
+      this.props.selected.index === nextProps.selected.index &&
+      this.props.selected.event === nextProps.selected.event)) {
+      return;
+    }
+    // first reset transform and clear the canvas
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.clearRect(0, 0, this.props.width, this.height);
+
+    // reset each flow's y value
+    _.each(this.flows, (flow) => {
+      flow.centerY = this.height - this.props.padding;
+    });
+    // recolor the circles
+    this.updateCircleColors(this.flows, nextProps.selected)
+    this.drawFlowsAndReturnPositions(this.flows);
   },
 
   // generate the flow line, given one event for one team
   generateFlowData(teams) {
     var xWidth = (this.props.width - 2 * this.props.padding) / (this.props.data.length - 1);
     return _.map(teams, (team, i) => {
-      var gradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, maxRadius);
-      gradient.addColorStop(1, 'rgba(' + colors[team.country][0] + ',0.1)');
-      gradient.addColorStop(0, 'rgba(' + colors[team.country][1] + ',0.1)');
-
       return {
         width: xWidth,
         centerX: xWidth * i + this.props.padding,
-        stroke: gradient,
-        fill: 'rgba(' + colors[team.gender] + ', 0.01)',
         radii: _.map(team.breakdown, (scores) => {
           return this.props.scales.radiusScale(scores[0]);
         }),
@@ -147,6 +158,26 @@ module.exports = React.createClass({
         elapsed: 0,
         data: team
       }
+    });
+  },
+
+  updateCircleColors(flows, selected) {
+    var grayGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, maxRadius);
+    grayGradient.addColorStop(1, 'rgba(102,102,102,0.01)');
+    grayGradient.addColorStop(0, 'rgba(207,207,207,0.01)');
+
+    _.each(flows, (flow) => {
+      var colorGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, maxRadius);
+      colorGradient.addColorStop(1, 'rgba(' + colors[flow.data.country][0] + ',0.1)');
+      colorGradient.addColorStop(0, 'rgba(' + colors[flow.data.country][1] + ',0.1)');
+
+      flow.strokes = _.map(flow.interpolators, (interpolator, i) => {
+        // if there's nothing selected, everything should be colored
+        if (!selected) return colorGradient;
+        // if something IS selected, only color the ones matching the event and round
+        return selected.event === flow.data.event && selected.index === i ?
+          colorGradient : grayGradient;
+      });
     });
   },
 
@@ -203,7 +234,7 @@ module.exports = React.createClass({
 
       return _.map(flow.interpolators, (interpolator, i) => {
         var length = flow.length[i + 1];
-        this.ctx.strokeStyle = flow.stroke;
+        this.ctx.strokeStyle = flow.strokes[i];
 
         var xOffset = 0;
         // for each of the interpolators, draw the circle length amount of times
@@ -235,6 +266,7 @@ module.exports = React.createClass({
           x1: x1,
           x2: x1 + maxX,
           y: flow.centerY,
+          index: i,
           score: flow.data.breakdown[i + 1],
           data: flow.data,
         };

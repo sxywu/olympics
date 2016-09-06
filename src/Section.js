@@ -9,7 +9,12 @@ module.exports = React.createClass({
       width: 1200,
       padding: 175,
       scorePositions: [],
+      selected: null,
     }
+  },
+
+  onSelectAnnotation(selected) {
+    this.setState({selected})
   },
 
   updatePositions(scorePositions, height) {
@@ -25,8 +30,9 @@ module.exports = React.createClass({
     return (
       <div style={style}>
         <Canvas {...this.props} {...this.state}
-          updatePositions={this.updatePositions} />
-        <Annotation {...this.props} {...this.state} />
+          updatePositions={this.updatePositions} selected={this.state.selected} />
+        <Annotation {...this.props} {...this.state}
+          selected={this.state.selected} onSelect={this.onSelectAnnotation} />
       </div>
     );
   }

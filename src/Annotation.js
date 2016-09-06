@@ -9,6 +9,17 @@ var colors = {
 };
 
 module.exports = React.createClass({
+  onClick(pos) {
+    // if the event and round is the same, unselect
+    if (this.props.selected &&
+      this.props.selected.index === pos.index &&
+      this.props.selected.event === pos.data.event) {
+      this.props.onSelect();
+    } else {
+      this.props.onSelect({index: pos.index, event: pos.data.event});
+    }
+  },
+
   render() {
     var style = {
       position: 'absolute',
@@ -19,8 +30,15 @@ module.exports = React.createClass({
 
     var format1 = d3.format('.1f');
     var format2 = d3.format('.2f');
-    var annotations = _.map(this.props.scorePositions, (pos) => {
+    var annotations = _.map(this.props.scorePositions, (pos, i) => {
       var fontSize = 10;
+      var opacity = 1;
+      if (this.props.selected &&
+        (this.props.selected.index !== pos.index ||
+        this.props.selected.event !== pos.data.event)) {
+        // if something is hovered, but it's not this event or round
+        opacity = .1;
+      }
       var posStyle = {
         position: 'absolute',
         fontSize,
@@ -30,9 +48,11 @@ module.exports = React.createClass({
         borderBottom: '1px solid',
         textAlign: 'right',
         cursor: 'pointer',
+        opacity,
       };
       return (
         <div style={posStyle}>
+          onClick={this.onClick.bind(this, pos)}>
           {format1(pos.score[0])} <br />
           {format2(pos.score[1])}
         </div>
@@ -61,7 +81,7 @@ module.exports = React.createClass({
           display: 'inline-block',
           backgroundColor: 'rgba(255, 255, 255, 0.75)',
         };
-        var countries = _.map(event, (country) => {
+        var countries = _.map(event, (country, i) => {
           var countryStyle = {
             width: xWidth - 6 * padding,
             // left: i * xWidth,
