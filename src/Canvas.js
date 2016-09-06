@@ -3,9 +3,7 @@ import * as d3 from "d3";
 import _ from 'lodash';
 
 // properties
-var width = 1000;
-var maxRadius = 50;
-var padding = 75;
+var maxRadius = 85;
 var TWO_PI = 2 * Math.PI;
 var colors = {
   'China': [[255,0,0], [255,255,0]],
@@ -140,12 +138,12 @@ module.exports = React.createClass({
           return generateCircleData(scores, this.props.scales.yScale);
         }),
         length: _.map(team.breakdown, (scores) => {
-          return Math.floor(scores[1]) * 4;
+          return Math.floor(scores[1]) * 3.5;
         }),
         rotations: _.map(team.breakdown, (scores) => {
           return scores[1] / team.total;
         }),
-        totalLength: Math.floor(team.total) * 4,
+        totalLength: Math.floor(team.total) * 3.5,
         elapsed: 0,
         data: team
       }

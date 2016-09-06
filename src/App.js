@@ -12,17 +12,20 @@ module.exports = React.createClass({
   },
 
   processData(data) {
-    var maxRadius = 50;
-    this.radiusScale = d3.scaleLog().range([maxRadius / 4, maxRadius]);
+    var maxRadius = 85;
+    this.radiusScale = d3.scaleLinear().range([maxRadius / 20, maxRadius]);
     this.yScale = d3.scaleLinear().range([0, 1]);
 
-    _.each(data, (d) => {
-      // create an artifical first score
-      d.breakdown.unshift(d.breakdown[0]);
-      d.processed = _.map(d.breakdown, function(score) {
-        return _.map(score[2], function(num) {return num * score[0]});
-      });
-    });
+    data = _.chain(data)
+      .sortBy((d) => d.event)
+      .map((d) => {
+        // create an artifical first score
+        d.breakdown.unshift(d.breakdown[0]);
+        d.processed = _.map(d.breakdown, function(score) {
+          return _.map(score[2], function(num) {return num * score[0]});
+        });
+        return d;
+      }).value();
 
     var difficulty = _.chain(data).map('breakdown').flatten().map(0).value();
     var maxDiff = _.max(difficulty);
@@ -40,6 +43,11 @@ module.exports = React.createClass({
     var women = _.filter(this.state.data, (d) => d.gender === 'W');
     var men = _.filter(this.state.data, (d) => d.gender === 'M');
     var scales = {radiusScale: this.radiusScale, yScale: this.yScale};
+    // var sections = _.chain(this.state.data)
+    //   .groupBy('event')
+    //   .map((data) => {
+    //     return (<Section data={data} scales={scales} />);
+    //   }).value();
 
     return (
       <div>
