@@ -43,11 +43,6 @@ module.exports = React.createClass({
     var women = _.filter(this.state.data, (d) => d.gender === 'W');
     var men = _.filter(this.state.data, (d) => d.gender === 'M');
     var scales = {radiusScale: this.radiusScale, yScale: this.yScale};
-    // var sections = _.chain(this.state.data)
-    //   .groupBy('event')
-    //   .map((data) => {
-    //     return (<Section data={data} scales={scales} />);
-    //   }).value();
 
     return (
       <div>
