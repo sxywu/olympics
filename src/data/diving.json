@@ -1,6 +1,7 @@
 [
   {
     "event": "Women's synchronized 3m springboard",
+    "event_key": "event1",
     "date": "Aug 7, 2016",
     "country": "Italy",
     "athletes": ["T. Cagnotto", "F. Dallapé"],
@@ -17,6 +18,7 @@
   },
   {
     "event": "Women's synchronized 3m springboard",
+    "event_key": "event1",
     "date": "Aug 7, 2016",
     "country": "China",
     "athletes": ["M.X. Wu", "T.M. Shi"],
@@ -33,6 +35,7 @@
   },
   {
     "event": "Women's synchronized 3m springboard",
+    "event_key": "event1",
     "date": "Aug 7, 2016",
     "country": "Australia",
     "athletes": ["M. Keeney", "A. Smith"],
@@ -49,6 +52,7 @@
   },
   {
     "event": "Men's synchronized 10m platform",
+    "event_key": "event2",
     "date": "Aug 8, 2016",
     "country": "United States",
     "athletes": ["S. Johnson", "D. Boudia"],
@@ -66,6 +70,7 @@
   },
   {
     "event": "Men's synchronized 10m platform",
+    "event_key": "event2",
     "date": "Aug 8, 2016",
     "country": "China",
     "athletes": ["A. Chen", "Y. Lin"],
@@ -83,6 +88,7 @@
   },
   {
     "event": "Men's synchronized 10m platform",
+    "event_key": "event2",
     "date": "Aug 8, 2016",
     "country": "Great Britain",
     "athletes": ["T. Daley", "D. Goodfellow"],
@@ -100,6 +106,7 @@
   },
   {
     "event": "Women's synchronized 10m platform",
+    "event_key": "event3",
     "date": "Aug 9, 2016",
     "country": "Malaysia",
     "athletes": ["P. Rinong", "J.H. Cheong"],
@@ -116,6 +123,7 @@
   },
   {
     "event": "Women's synchronized 10m platform",
+    "event_key": "event3",
     "date": "Aug 9, 2016",
     "country": "China",
     "athletes": ["R. L. Chen", "H. X. Liu"],
@@ -132,6 +140,7 @@
   },
   {
     "event": "Women's synchronized 10m platform",
+    "event_key": "event3",
     "date": "Aug 9, 2016",
     "country": "Canada",
     "athletes": ["M. Benfeito", "R. Filion"],
@@ -148,6 +157,7 @@
   },
   {
     "event": "Men's synchronized 3m springboard",
+    "event_key": "event4",
     "date": "Aug 10, 2016",
     "country": "United States",
     "athletes": ["M. Hixon", "S. Dorman"],
@@ -165,6 +175,7 @@
   },
   {
     "event": "Men's synchronized 3m springboard",
+    "event_key": "event4",
     "date": "Aug 10, 2016",
     "country": "Great Britain",
     "athletes": ["J. Laugher", "C. Mears"],
@@ -182,6 +193,7 @@
   },
   {
     "event": "Men's synchronized 3m springboard",
+    "event_key": "event4",
     "date": "Aug 10, 2016",
     "country": "China",
     "athletes": ["K. Qin", "Y. Cao"],
