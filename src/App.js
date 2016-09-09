@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import _ from 'lodash';
 import data from './data/diving.json';
 import Section from './Section.js';
+import Notes from './Notes.js';
 
 module.exports = React.createClass({
   getInitialState() {
@@ -47,8 +48,15 @@ module.exports = React.createClass({
         return (<Section data={data} scales={scales} />);
       }).value();
 
+    var notesStyle = {
+      width: this.state.width - this.state.padding,
+      padding: this.state.padding / 6 + 'px ' + this.state.padding / 2 + 'px',
+      fontSize: 14,
+    }
+
     return (
       <div>
+        <Notes style={notesStyle} filename='header' />
         {sections}
       </div>
     );
