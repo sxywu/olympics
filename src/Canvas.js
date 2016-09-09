@@ -99,10 +99,10 @@ module.exports = React.createClass({
 
     this.flows = this.generateFlowData(this.props.data);
 
-    this.height = _.maxBy(this.flows, 'totalLength').totalLength * 0.5 + 2 * this.props.padding;
+    this.height = _.maxBy(this.flows, 'totalLength').totalLength * 0.5 + this.props.padding;
     this.refs.canvas.height = this.height;
     _.each(this.flows, (flow) => {
-      flow.centerY = this.height - this.props.padding;
+      flow.centerY = this.height - this.props.padding / 2;
     });
 
     this.calculateCircles(this.flows);
@@ -127,7 +127,7 @@ module.exports = React.createClass({
 
     // reset each flow's y value
     _.each(this.flows, (flow) => {
-      flow.centerY = this.height - this.props.padding;
+      flow.centerY = this.height - this.props.padding / 2;
     });
     // recolor the circles
     this.updateCircleColors(this.flows, nextProps.selected)
@@ -148,12 +148,12 @@ module.exports = React.createClass({
           return generateCircleData(scores, this.props.scales.yScale);
         }),
         length: _.map(team.breakdown, (scores) => {
-          return Math.floor(scores[1]) * 3.25;
+          return Math.floor(scores[1]) * 3.75;
         }),
         rotations: _.map(team.breakdown, (scores) => {
           return scores[1] / team.total;
         }),
-        totalLength: Math.floor(team.total) * 3.25,
+        totalLength: Math.floor(team.total) * 3.75,
         elapsed: 0,
         data: team
       }

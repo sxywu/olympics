@@ -66,8 +66,8 @@ module.exports = React.createClass({
       if (this.state.hovered === pos) {
         // if this is the hovered annotation
         tdStyle.borderRight = '1px solid';
-        tdStyle.textShadow = '-1px -1px 0 #fff, 1px -1px 0 #fff,' +
-          ' -1px 1px 0 #fff, 1px 1px 0 #fff;';
+        tdStyle.textShadow = 'textShadow: -1px -1px 0 #fff, 1px -1px 0 #fff,' +
+          '-1px 1px 0 #fff, 1px 1px 0 #fff';
         // posStyle.backgroundColor = 'rgba(255, 255, 255, .25)';
 
         round = (<div>Round {pos.index + 1}</div>);
@@ -115,7 +115,7 @@ module.exports = React.createClass({
       .map((event, key) => {
         var eventStyle = {
           width: xWidth * event.length,
-          marginTop: this.props.height - this.props.padding,
+          marginTop: this.props.height - this.props.padding / 2,
           // only the first one will have margin
           // marginLeft: (i === 1 ? this.props.padding - (xWidth / 2) : 0),
           margin: 2 * padding,

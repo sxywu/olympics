@@ -8,12 +8,14 @@ import Notes from './Notes.js';
 module.exports = React.createClass({
   getInitialState() {
     return {
-      data: this.processData(data),
+      width: 1200,
+      padding: 175,
+      allData: this.processData(data),
     }
   },
 
   processData(data) {
-    var maxRadius = 85;
+    var maxRadius = 80;
     this.radiusScale = d3.scaleLinear().range([maxRadius / 20, maxRadius]);
     this.yScale = d3.scaleLinear().range([0, 1]);
 
@@ -48,6 +50,10 @@ module.exports = React.createClass({
         return (<Section data={data} scales={scales} />);
       }).value();
 
+    var style = {
+      width: this.state.width,
+      margin: 'auto',
+    };
     var notesStyle = {
       width: this.state.width - this.state.padding,
       padding: this.state.padding / 6 + 'px ' + this.state.padding / 2 + 'px',
@@ -55,7 +61,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <div>
+      <div style={style}>
         <Notes style={notesStyle} filename='header' />
         {sections}
       </div>
