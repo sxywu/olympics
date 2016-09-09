@@ -44,10 +44,10 @@ module.exports = React.createClass({
 
   render() {
     var scales = {radiusScale: this.radiusScale, yScale: this.yScale};
-    var sections = _.chain(this.state.data)
-      .groupBy('event')
+    var sections = _.chain(this.state.allData)
+      .groupBy((data) => data.event.split(' ')[2])
       .map((data) => {
-        return (<Section data={data} scales={scales} />);
+        return (<Section data={data} scales={scales} {...this.state} />);
       }).value();
 
     var style = {
