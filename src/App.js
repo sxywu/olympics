@@ -58,12 +58,21 @@ module.exports = React.createClass({
       width: this.state.width - this.state.padding,
       padding: this.state.padding / 6 + 'px ' + this.state.padding / 2 + 'px',
       fontSize: 14,
-    }
+    };
+    var footerStyle = Object.assign(_.clone(notesStyle), {
+      marginTop: 100,
+      fontSize: 12,
+      textAlign: 'center',
+    });
 
     return (
       <div style={style}>
         <Notes style={notesStyle} filename='header' />
         {sections}
+        <div style={footerStyle}>
+          🏅<br />
+          by <a href='http://sxywu.com' target='_new'>Shirley Wu</a> for August <a href='http://datasketch.es' target='_new'>data sketch|es</a>.
+        </div>
       </div>
     );
   }

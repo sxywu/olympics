@@ -1,6 +1,6 @@
 import React from 'react';
 var Remarkable = require('remarkable');
-var md = new Remarkable({linkTarget: '_new'});
+var md = new Remarkable({linkTarget: '_new', html: true});
 import _ from 'lodash';
 
 module.exports = React.createClass({

@@ -2,7 +2,6 @@ import React from 'react';
 import _ from 'lodash';
 import Canvas from './Canvas.js';
 import Annotation from './Annotation.js';
-import Notes from './Notes.js';
 
 module.exports = React.createClass({
   getInitialState() {
@@ -26,11 +25,11 @@ module.exports = React.createClass({
     var style = {
       position: 'relative',
     };
-    var notesStyle = {
-      width: this.props.width - this.props.padding,
-      padding: '10px ' + this.props.padding / 2 + 'px',
-      fontSize: 12,
-    };
+    // var notesStyle = {
+    //   width: this.props.width - this.props.padding,
+    //   padding: '10px ' + this.props.padding / 2 + 'px',
+    //   fontSize: 12,
+    // };
 
     return (
       <div style={style}>
@@ -38,8 +37,6 @@ module.exports = React.createClass({
           updatePositions={this.updatePositions} selected={this.state.selected} />
         <Annotation {...this.props} {...this.state}
           selected={this.state.selected} onSelect={this.onSelectAnnotation} />
-        <Notes {...this.props} {...this.state}
-          style={notesStyle} filename={this.props.data[0].event_key} />
       </div>
     );
   }
