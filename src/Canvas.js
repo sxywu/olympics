@@ -233,6 +233,7 @@ module.exports = React.createClass({
       return _.map(flow.interpolators, (interpolator, i) => {
         var length = flow.length[i + 1];
         this.ctx.strokeStyle = flow.strokes[i];
+        this.ctx.lineWidth = 1.01;
 
         var xOffset = 0;
         // for each of the interpolators, draw the circle length amount of times
